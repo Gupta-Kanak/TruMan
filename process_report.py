@@ -25,10 +25,10 @@ for (scenario, report_file) in list_reports(args.input_dir):
 
     # Avoid path errors
     if not os.path.exists(report_file):
-        print 'Report '+report_file+' not found. Skipping.'
+        print ('Report '+report_file+' not found. Skipping.')
         continue
 
-    print 'Processing '+scenario
+    print ('Processing '+scenario)
 
     # Create directories if necessary
     if not os.path.exists(output):
@@ -36,7 +36,7 @@ for (scenario, report_file) in list_reports(args.input_dir):
 
     timestamp = 0
     edges = ''
-    with open(report_file, 'rb') as report:
+    with open(report_file, 'r') as report:
         for line in report.readlines():
             # Square brackets separate the timestamps
             if '[' in line:
@@ -44,6 +44,6 @@ for (scenario, report_file) in list_reports(args.input_dir):
                 with open(output+'/'+str(timestamp)+'.txt', 'w') as out:
                     out.write(edges)
                 edges = ''
-                timestamp = int(line.translate(None, '[]'))
+                timestamp = int(line.translate(str.maketrans('', '', '[]')))
             else:
-                edges += line.translate(None, 'ABCDEFGHW')
+                edges += line.translate(str.maketrans('', '', 'ABCDEFGHW'))
